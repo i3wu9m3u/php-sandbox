@@ -16,7 +16,6 @@ RUN set -eux \
     pdo_mysql
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer \
-  && composer config -g repos.packagist composer https://packagist.jp \
-  && composer global require hirak/prestissimo
+  && composer config -g repos.packagist composer https://packagist.jp
 
 COPY ./apache2/000-default.conf /etc/apache2/sites-available
