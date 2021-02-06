@@ -4,6 +4,10 @@ ARG TZ
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /composer
 
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}/../!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
 RUN set -eux \
   && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
   && apt-get update \
@@ -17,5 +21,3 @@ RUN set -eux \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer \
   && composer config -g repos.packagist composer https://packagist.jp
-
-COPY ./apache2/000-default.conf /etc/apache2/sites-available

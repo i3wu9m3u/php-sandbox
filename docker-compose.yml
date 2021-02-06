@@ -13,6 +13,7 @@ services:
       - ./logs/php:/var/log/php
       - ./docker/web/php.ini:/usr/local/etc/php/php.ini
     environment:
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public
       - DB_CONNECTION=mysql
       - DB_HOST=db
       - DB_DATABASE=${DB_NAME}
