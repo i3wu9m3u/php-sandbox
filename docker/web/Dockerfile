@@ -1,8 +1,6 @@
 FROM php:7.4-apache
 
 ARG TZ
-ENV COMPOSER_ALLOW_SUPERUSER 1
-ENV COMPOSER_HOME /composer
 
 RUN set -eux \
   && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
@@ -15,8 +13,7 @@ RUN set -eux \
   && docker-php-ext-install \
     pdo_mysql
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer \
-  && composer config -g repos.packagist composer https://packagist.jp
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # for SSL
 RUN openssl genrsa -out /etc/apache2/server.key 2048 2>/dev/null \
